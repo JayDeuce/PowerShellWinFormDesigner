@@ -11,8 +11,8 @@
 # 1. Add the ability to choose between saving the form for use as standalone form code (for use in .dotsourcing the form into a main script file) or
 #    as a complete codeset with form code and main script code in one.
 # 2. Refactor Properties and events section to streamline their functions and variable use
-# 3. Redesign Main form to allow for additon of adding more events to events section along with code specific to that event
-# 4. Add ability for tabbed forms and mulit window forms
+# 3. Redesign Main form to allow for addition of adding more events to events section along with code specific to that event
+# 4. Add ability for tabbed forms and multi window forms
 # 5. Set message when property is left blank
 # 6. Clear Main Form on Design form close... (Clear out datagridviews)
 #-------
@@ -21,7 +21,7 @@
 # things to the items in that box, not the form itself.
 #
 # Control Variable names: Prefix is type of control e.g. -> dgv is Data Grid View, cb is Combo Box, etc.
-# GUI Element Varaibles name: Prefix is type of element e.g -> b is Button, cb Combo Box, gb is Group Box, lab is Label, etc.
+# GUI Element Variables name: Prefix is type of element e.g -> b is Button, cb Combo Box, gb is Group Box, lab is Label, etc.
 #
 #region === Initialization ===
 
@@ -302,7 +302,7 @@ function Add-Control {
           $Control.Text = $Control.Name
           $Control.Tag += 'Text'
      }
-     # Sets the abilties to resize and move the new control with the mouse on the design form (see Functions above)
+     # Sets the abilities to resize and move the new control with the mouse on the design form (see Functions above)
      $Control.Add_PreviewKeyDown( {$_.IsInputKey = $true} )
      $Control.Add_KeyDown( {Set-ResizeAndMoveWithKeyboard} )
      $Control.Add_MouseDown( {Set-MouseDown} )
@@ -405,7 +405,7 @@ function Update-AvailableEventsCB {
           }}
 }
 function Update-CurrentCtrlEventsGrid {
-     # Refreshs the events Grid box and Adds the Selected event handler of the current control to the list
+     # Refresh the events Grid box and Adds the Selected event handler of the current control to the list
      $dgvEvents.Rows.Clear()
      [array]$events = $Global:currentCtrl | Get-Member | Where-Object {$_ -like '*EventHandler*'}
      foreach ($eventItem in $events) {
@@ -416,9 +416,9 @@ function Update-CurrentCtrlEventsGrid {
      }
 }
 function Add-Event {
-     # On button click, grabs the event handler selected and adds to the current control Tag porperty.
-     $event = $cbAddEvent.Items[$cbAddEvent.SelectedIndex]
-     $Global:currentCtrl.Tag += 'Add_' + $event + '($' + $Global:currentCtrl.Name + '_' + $event + ')'
+     # On button click, grabs the event handler selected and adds to the current control Tag property.
+     $eventH = $cbAddEvent.Items[$cbAddEvent.SelectedIndex]
+     $Global:currentCtrl.Tag += 'Add_' + $eventH + '($' + $Global:currentCtrl.Name + '_' + $eventH + ')'
      Update-CurrentCtrlEventsGrid
 }
 
@@ -538,7 +538,7 @@ function Save-FrmDesign {
      # Runs Enumerate-SaveControls Function to add form code.
      Enumerate-SaveControls $Global:frmDesign
 
-     # Adds Show Dialog Code (Last Line in code) NOTE: Can be erased if dot-sourcing into a MainProgram file, keeps form code seperate from main code (Furture Feature)
+     # Adds Show Dialog Code (Last Line in code) NOTE: Can be erased if dot-sourcing into a MainProgram file, keeps form code separate from main code (Future Feature)
      $Global:source += $newline + '[void]$' + $Global:frmDesign.Name + '.ShowDialog()' + $newline
 
      # Sets file name for the savefile
@@ -634,7 +634,7 @@ function Open-DesignForm {
                catch {
                }
                if ($Global:frmDesign) {
-                    # If the variable is postive, check to see if it is a form and load the properties and events to the Enumerate-LoadControls
+                    # If the variable is positive, check to see if it is a form and load the properties and events to the Enumerate-LoadControls
                     Get-Variable | Where-Object {[string]$_.Value -like 'System.Windows.Forms.*'} | Where-Object {
                          try {
                               $_.Value.Name = $_.Name
